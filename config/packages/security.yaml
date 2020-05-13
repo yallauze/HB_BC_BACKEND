@@ -1,0 +1,33 @@
+security:
+    encoders:
+        App\Entity\User:
+            algorithm: auto
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: username
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            pattern: ^/
+            anonymous: true
+            stateless: true
+            provider: app_user_provider
+            json_login:
+                check_path: /login
+            guard:
+                authenticators:
+                    - App\Security\AppAuthenticator
+    access_control:
+        - { path: ^/advert, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/fuel, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/model, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/brand, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/pro, roles: ROLE_PRO }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+        
